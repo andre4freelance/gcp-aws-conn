@@ -1,0 +1,16 @@
+# Python files and environment
+*.py
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+
+# Topology documents
+GCP_AWS_HA_VPN_TOPOLOGY.md
+*TOPOLOGY.md
+
+# Handover documents
+handover.md
