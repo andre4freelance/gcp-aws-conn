@@ -88,8 +88,8 @@ On the GCP side, create a **Peer VPN Gateway** that represents the AWS VGW. Ente
 
 Create four VPN tunnels on GCP, mapping each tunnel to the corresponding AWS endpoint. For each tunnel, configure a **BGP session** using the inside tunnel IP addresses provided in the AWS VPN configuration file.
 
-- Use the **Pre-Shared Key (PSK)** from the AWS configuration for each tunnel.
 - Assign the **GCP BGP IP** and **AWS Peer BGP IP** based on the inside CIDR allocations.
+- Use the **Pre-Shared Key (PSK)** from the AWS configuration for each tunnel.
 
 ![Create BGP Session](images/create-bgp1-1-session.png)
 ![All Four VPN Tunnels Configured](images/create-4-aws-ohio-tunnel-with-psk.png)
