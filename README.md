@@ -184,6 +184,9 @@ After updating the Security Group to allow traffic from `172.31.255.0/27`, the p
 
 ---
 
-## License
+## Links
 
-This project is licensed under the terms specified in the [LICENSE](LICENSE) file.
+Origin : 
+- [Origin](https://github.com/andre4freelance/gcp-aws-conn)
+- [Linkedin post](https://www.linkedin.com/posts/link-andre-bastian_multicloud-gcp-aws-ugcPost-7464049726284533760-THZ2/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAD73JlUBty-p-mBfMEW0-O4j0sv-e_PRQvc)
+- Facebook post
