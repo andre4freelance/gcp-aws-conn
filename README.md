@@ -73,6 +73,7 @@ Create two VPN connections on AWS, each linking the VGW to one of the Customer G
 
 - Set the **Routing Option** to `Dynamic (requires BGP)` to enable automatic route exchange.
 - Configure **Pre-Shared Keys (PSKs)** and **Inside CIDR blocks** for each tunnel (these can be auto-generated or manually specified).
+- Once the VPN connections are created, **download the configuration file** from the AWS Console using the **"Generic vendor"** option. This file contains the **Pre-Shared Keys** and **BGP inside tunnel IP addresses** that will be required when configuring the VPN tunnels on the GCP side.
 
 ![Create VPN Connection 1](images/create-vpn-gcp-lowa-1.png)
 ![Create VPN Connection 2](images/create-vpn-gcp-lowa-2.png)
@@ -90,8 +91,8 @@ Create four VPN tunnels on GCP, mapping each tunnel to the corresponding AWS end
 - Use the **Pre-Shared Key (PSK)** from the AWS configuration for each tunnel.
 - Assign the **GCP BGP IP** and **AWS Peer BGP IP** based on the inside CIDR allocations.
 
-![Create Tunnels with PSK](images/create-4-aws-ohio-tunnel-with-psk.png)
 ![Create BGP Session](images/create-bgp1-1-session.png)
+![All Four VPN Tunnels Configured](images/create-4-aws-ohio-tunnel-with-psk.png)
 
 ### Step 8 — Update VPC Route Tables on AWS
 
