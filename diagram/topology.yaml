@@ -1,0 +1,162 @@
+Diagram:
+  DefinitionFiles:
+    - Type: URL
+      Url: https://raw.githubusercontent.com/awslabs/diagram-as-code/main/definitions/definition-for-aws-icons-light.yaml
+
+  Resources:
+    Canvas:
+      Type: AWS::Diagram::Canvas
+      Direction: vertical
+      Children:
+        - Title
+        - Subtitle
+        - CloudsRow
+
+    Title:
+      Type: AWS::Diagram::Resource
+      Title: "HYBRID CLOUD CONNECTIVITY"
+
+    Subtitle:
+      Type: AWS::Diagram::Resource
+      Title: "Building HA VPN Between GCP and AWS with BGP Dynamic Routing"
+
+    CloudsRow:
+      Type: AWS::Diagram::HorizontalStack
+      Align: center
+      Children:
+        - GoogleCloud
+        - TunnelInfo
+        - AWSCloud
+
+    # ======================= GCP SIDE =======================
+    GoogleCloud:
+      Type: AWS::Diagram::Cloud
+      Preset: AWSCloudNoLogo
+      Title: "Google Cloud  —  Project: aws-conn  |  us-central1 (Iowa)"
+      BorderColor: "rgba(66,133,244,255)"
+      Align: center
+      Children:
+        - GcpVPC
+        - CloudRouter
+        - HAVPN
+
+    GcpVPC:
+      Type: AWS::Diagram::Resource
+      Preset: "Generic group"
+      Title: "VPC: vpc-lowa  |  172.31.255.0/27"
+      BorderColor: "rgba(66,133,244,255)"
+      Children:
+        - VMInstance
+
+    VMInstance:
+      Type: AWS::Diagram::Resource
+      Preset: "Instance"
+      Title: "VM Instance\n172.31.255.2"
+
+    CloudRouter:
+      Type: AWS::Diagram::Resource
+      Preset: "Router"
+      Title: "Cloud Router: lowa-router\nASN 64521"
+
+    HAVPN:
+      Type: AWS::Diagram::Resource
+      Preset: "VPN gateway"
+      Title: "HA VPN: lowa-vgw\nIF0 34.183.43.204\nIF1 34.184.42.88"
+
+    # ==================== TUNNEL INFO (center) ====================
+    TunnelInfo:
+      Type: AWS::Diagram::Resource
+      Title: "4 IPSec Tunnels (BGP)\nT1: 169.254.218.150 <-> .149\nT2: 169.254.37.90 <-> .89\nT3: 169.254.127.134 <-> .133\nT4: 169.254.178.58 <-> .57"
+
+    # ======================= AWS SIDE =======================
+    AWSCloud:
+      Type: AWS::Diagram::Cloud
+      Preset: AWSCloudNoLogo
+      Title: "Amazon Web Services  —  us-east-2 (Ohio)"
+      Align: center
+      Children:
+        - VGW
+        - OhioVPC
+        - IGW
+
+    VGW:
+      Type: AWS::EC2::VPNGateway
+      Title: "VGW: gcp-lowa-vgw | ASN 64522\n3.12.101.62 / 3.149.165.127\n3.12.186.51 / 3.18.97.102"
+
+    OhioVPC:
+      Type: AWS::EC2::VPC
+      Direction: vertical
+      Title: "VPC: vpc-ohio — 10.255.255.0/24\nVGW Propagation: 172.31.255.0/27 learned"
+      Children:
+        - PublicSubnet
+        - PrivateSubnet
+
+    PublicSubnet:
+      Type: AWS::EC2::Subnet
+      Preset: PublicSubnet
+      Title: "Subnet Public: 10.255.255.32/27"
+      Children:
+        - EC2Public
+
+    EC2Public:
+      Type: AWS::EC2::Instance
+      Title: "ec2-public\n10.255.255.58  |  EIP 18.217.232.46"
+
+    PrivateSubnet:
+      Type: AWS::EC2::Subnet
+      Preset: PrivateSubnet
+      Title: "Subnet Private: 10.255.255.0/27"
+      Children:
+        - EC2Private
+
+    EC2Private:
+      Type: AWS::EC2::Instance
+      Title: "ec2-private\n10.255.255.9"
+
+    IGW:
+      Type: AWS::EC2::InternetGateway
+      Title: "IGW"
+
+  Links:
+    - Source: VMInstance
+      SourcePosition: E
+      Target: CloudRouter
+      TargetPosition: W
+      TargetArrowHead:
+        Type: Open
+      Labels:
+        TargetLeft:
+          Title: "172.31.255.0/27"
+
+    - Source: CloudRouter
+      SourcePosition: E
+      Target: HAVPN
+      TargetPosition: W
+      TargetArrowHead:
+        Type: Open
+
+    - Source: HAVPN
+      SourcePosition: E
+      Target: VGW
+      TargetPosition: W
+      LineColor: "rgba(46,160,67,255)"
+      LineWidth: 2
+      TargetArrowHead:
+        Type: Open
+
+    - Source: VGW
+      SourcePosition: E
+      Target: EC2Private
+      TargetPosition: W
+      TargetArrowHead:
+        Type: Open
+
+    - Source: EC2Public
+      SourcePosition: E
+      Target: IGW
+      TargetPosition: W
+      TargetArrowHead:
+        Type: Open
+      Labels:
+        TargetLeft:
+          Title: "0.0.0.0/0"
